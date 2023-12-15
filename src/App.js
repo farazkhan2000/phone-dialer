@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import DialerScreen from "./components/DialerScreen";
+import DialedNumberScreen from "./components/DialedNumberScreen";
+import CallLogScreen from "./components/CallLogScreen";
+import DialerContext from "./components/DialerContext";
 
-function App() {
+const App = () => {
+  const [dialedNumber, setDialedNumber] = useState("");
+  const [callLog, setCallLog] = useState([]);
+
+  const dialerContextValue = {
+    dialedNumber,
+    setDialedNumber,
+    callLog,
+    setCallLog,
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DialerContext.Provider value={dialerContextValue}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<DialerScreen />} />
+          <Route path="/dialed" element={<DialedNumberScreen />} />
+          <Route path="/call-log" element={<CallLogScreen />} />
+        </Routes>
+      </Router>
+    </DialerContext.Provider>
   );
-}
+};
 
 export default App;
